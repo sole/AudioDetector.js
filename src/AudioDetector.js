@@ -2,7 +2,7 @@
 // Based on alteredq & mrdoob's Detector.js https://github.com/mrdoob/three.js/blob/master/examples/js/Detector.js
 AudioDetector = {
 
-	webAudioSupport: !! window.webkitAudioContext,
+	webAudioSupport: typeof( window.webkitAudioContext ) === 'function',
 	oggSupport: document.createElement('audio').canPlayType('audio/ogg'),
 
 	errorMessages: {
@@ -15,7 +15,6 @@ AudioDetector = {
 	getErrorMessage: function ( message ) {
 
 		var element = document.createElement( 'div' );
-		element.id = 'audio-error-message';
 		element.style.fontFamily = 'monospace';
 		element.style.fontSize = '13px';
 		element.style.fontWeight = 'normal';
@@ -37,6 +36,10 @@ AudioDetector = {
 	},
 
 	detects: function( conditions ) {
+		if( ! ( conditions instanceof Array ) ) {
+			this.showErrorMessage('<span style="font-size: 200%;">Oi!</span> <strong>conditions</strong> must be an Array with conditions to be checked');
+			return false;
+		};
 		for(var i = 0; i < conditions.length; i++) {
 			var propertyName = conditions[i];
 			
@@ -60,7 +63,7 @@ AudioDetector = {
 		parameters = parameters || {};
 
 		parent = parameters.parent !== undefined ? parameters.parent : document.body;
-		id = parameters.id !== undefined ? parameters.id : 'oldie';
+		id = parameters.id !== undefined ? parameters.id : 'audio-error-message';
 
 		element = AudioDetector.getErrorMessage(message);
 		element.id = id;
