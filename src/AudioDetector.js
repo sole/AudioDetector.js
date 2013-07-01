@@ -2,7 +2,8 @@
 // Based on alteredq & mrdoob's Detector.js https://github.com/mrdoob/three.js/blob/master/examples/js/Detector.js
 AudioDetector = {
 
-	webAudioSupport: typeof( window.webkitAudioContext ) === 'function',
+	REVISION: 3,
+	webAudioSupport: typeof(window.AudioContext) === 'function' || typeof( window.webkitAudioContext ) === 'function',
 	oggSupport: document.createElement('audio').canPlayType('audio/ogg'),
 
 	errorMessages: {
@@ -39,7 +40,8 @@ AudioDetector = {
 		if( ! ( conditions instanceof Array ) ) {
 			this.showErrorMessage('<span style="font-size: 200%;">Oi!</span> <strong>conditions</strong> must be an Array with conditions to be checked');
 			return false;
-		};
+		}
+
 		for(var i = 0; i < conditions.length; i++) {
 			var propertyName = conditions[i];
 			
